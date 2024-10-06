@@ -1,0 +1,19 @@
+{
+"commands": [
+    {
+	    "base_command": "echo",
+	    "services": [ "hello", "world" ],
+	    "environments": [
+		    {
+			"name": "dev",
+			"confirm": false
+		    },
+			{
+			"name": "staging",
+			"confirm": true
+		    }
+	    
+	    ]
+    }
+]
+}
