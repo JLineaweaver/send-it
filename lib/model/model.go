@@ -20,7 +20,7 @@ type Environment struct {
 	Alias              string `json:"alias"`
 	PreServiceCommand  string `json:"pre_service_command"`
 	PostServiceCommand string `json:"post_service_command"`
-	Confirm            bool   `json:"confirm"`
+	SkipConfirm        bool   `json:"skip_confirm"`
 }
 
 func (c *Config) BuildCommandHelpers() map[int]string {

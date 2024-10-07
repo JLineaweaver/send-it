@@ -50,7 +50,7 @@ func Build(cfg model.Config, args []string) []string {
 
 	c := append([]string{command.BaseCommand, service}, envCommand...)
 
-	if environment.Confirm {
+	if !environment.SkipConfirm {
 		var confirm string
 		// Make sure they want to run this
 		fmt.Printf("Here is the command to run\n")

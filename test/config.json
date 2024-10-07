@@ -6,11 +6,11 @@
 	    "environments": [
 		    {
 			"name": "dev",
-			"confirm": false
+			"skip_confirm": true
 		    },
 			{
 			"name": "staging",
-			"confirm": true
+			"skip_confirm": false
 		    }
 	    
 	    ]
