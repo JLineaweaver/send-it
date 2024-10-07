@@ -40,15 +40,16 @@ func Build(cfg model.Config, args []string) []string {
 	}
 
 	// Reset envString variable and build the command
-	envCommand := []string{environment.Name}
+	serviceCommand := []string{service}
 	if environment.PreServiceCommand != "" {
-		envCommand = append([]string{environment.PreServiceCommand}, envCommand...)
+		serviceCommand = append([]string{environment.PreServiceCommand}, serviceCommand...)
 	}
 	if environment.PostServiceCommand != "" {
-		envCommand = append(envCommand, environment.PostServiceCommand)
+		serviceCommand = append(serviceCommand, environment.PostServiceCommand)
 	}
+	serviceCommand = append(serviceCommand, environment.Name)
 
-	c := append([]string{command.BaseCommand, service}, envCommand...)
+	c := append([]string{command.BaseCommand}, serviceCommand...)
 
 	if !environment.SkipConfirm {
 		var confirm string
