@@ -1,12 +1,12 @@
 package cmd
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/jlineaweaver/send-it/lib/builder"
 	"github.com/jlineaweaver/send-it/lib/model"
@@ -64,13 +64,20 @@ func sendIt(cmd *cobra.Command, args []string) {
 	if len(c) == 0 {
 		return
 	}
+	commandSlice := strings.Split(c, " ")
 
-	command := exec.Command(c[0], c[1:]...)
-	var out bytes.Buffer
-	command.Stdout = &out
-	err := command.Run()
+	command := exec.Command(commandSlice[0], commandSlice[1:]...)
+
+	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(out.String())
+	command.Dir = dir
+	command.Stdout = os.Stdout
+	command.Stderr = os.Stderr
+
+	err = command.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

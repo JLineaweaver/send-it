@@ -5,12 +5,11 @@ import (
 	"log"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/jlineaweaver/send-it/lib/model"
 )
 
-func Build(cfg model.Config, args []string) []string {
+func Build(cfg model.Config, args []string) string {
 	// If no args we're in full interactive mode
 	serviceDictonary := cfg.BuildCommandHelpers()
 	var service string
@@ -40,31 +39,25 @@ func Build(cfg model.Config, args []string) []string {
 	}
 
 	// Reset envString variable and build the command
-	serviceCommand := []string{service}
-	if environment.PreServiceCommand != "" {
-		serviceCommand = append([]string{environment.PreServiceCommand}, serviceCommand...)
-	}
-	if environment.PostServiceCommand != "" {
-		serviceCommand = append(serviceCommand, environment.PostServiceCommand)
-	}
-	serviceCommand = append(serviceCommand, environment.Name)
-
-	c := append([]string{command.BaseCommand}, serviceCommand...)
+	c := fmt.Sprintf("%s %s %s %s %s", command.BaseCommand, environment.PreServiceCommand, service, environment.PostServiceCommand, environment.Name)
 
 	if !environment.SkipConfirm {
 		var confirm string
 		// Make sure they want to run this
 		fmt.Printf("Here is the command to run\n")
-		fmt.Printf("$ %s\n", strings.Join(c, " "))
+		fmt.Printf("$ %s\n", c)
 		fmt.Println("Do you want to run this command? (y/n)")
 		fmt.Scanln(&confirm)
 		if confirm == "y" || confirm == "Y" || confirm == "yes" || confirm == "Yes" {
 			return c
 		} else {
 			fmt.Println("Failed to confirm, exiting")
-			return []string{}
+			return ""
 		}
 	}
+
+	fmt.Printf("Running: $ %s\n", c)
+
 	return c
 }
 
