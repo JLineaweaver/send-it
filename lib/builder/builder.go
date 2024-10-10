@@ -48,8 +48,19 @@ func Build(cfg model.Config, args []string) string {
 		environmentCommand = fmt.Sprintf("%s=%s", environment.EnvironmentArg, environment.Name)
 	}
 
-	// Reset envString variable and build the command
-	c := fmt.Sprintf("%s %s %s %s", command.BaseCommand, environment.Arguments, serviceCommand, environmentCommand)
+	// Build the command
+	c := command.BaseCommand
+	if environment.Arguments != "" {
+		c = fmt.Sprintf("%s %s", c, environment.Arguments)
+	}
+
+	if serviceCommand != "" {
+		c = fmt.Sprintf("%s %s", c, serviceCommand)
+	}
+
+	if environmentCommand != "" {
+		c = fmt.Sprintf("%s %s", c, environmentCommand)
+	}
 
 	if !environment.SkipConfirm {
 		var confirm string
